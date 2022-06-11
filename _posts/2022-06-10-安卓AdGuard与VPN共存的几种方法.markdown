@@ -3,7 +3,7 @@ layout: post
 title:  "安卓AdGuard与VPN共存的几种方法"
 date:   2022-06-10 16:09:06 +0800
 categories: 折腾笔记
-permalink: /Toss-notes/jekyll-post-page.html
+permalink: /Toss-notes/adguard-vpn-coexist.html
 tags: [AdGuard]
 ---
 
