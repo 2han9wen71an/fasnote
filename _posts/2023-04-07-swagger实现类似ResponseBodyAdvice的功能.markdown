@@ -425,3 +425,6 @@ public static class TestController {
     - put方法 使用默认返回
 
         ![put]({{ site.url }}\assets\images\post\put.png)
+ ### 参考文献
+ - [Swagger统一应答类型处理](https://www.xiehai.zone/2022-07-04-swagger-common-response.html)
+ - [定义swagger通用接口文档](https://dongmaxiang.cn/posts/%E5%AE%9A%E4%B9%89swagger%E9%80%9A%E7%94%A8%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3)
