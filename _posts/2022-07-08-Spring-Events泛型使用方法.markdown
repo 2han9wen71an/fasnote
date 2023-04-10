@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Spring-Events泛型使用方法"
-description: ""
+
 date:   2022-07-08 11:24:24 +0800
 categories: 代码笔记
 permalink: /CodeNotes/spring-event.html
