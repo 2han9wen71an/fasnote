@@ -1,0 +1,152 @@
+---
+layout: post
+title:  "常用终端代理设置"
+date:   2023-07-29 19:29:13 +0800
+categories: 折腾笔记
+permalink: /Toss-notes/commonProxySettings.html
+tags: ["Proxy"]
+---
+# 常用终端代理设置
+
+Tip
+
+桌面端还在用其他代理软件的新手，强烈建议将其换成 Clash for Windows 并启用 [TUN 模式](https://docs.cfw.lbyczf.com/contents/tun.html)。那么，下面的内容除了 Git over SSH 都不用考虑了，避免浪费时间作无意义的折腾。
+
+## CMD
+
+```
+# 设置
+set http_proxy=http://127.0.0.1:1080
+set https_proxy=http://127.0.0.1:1080
+# 取消
+set http_proxy=
+set https_proxy=
+```
+
+## PowerShell
+
+```
+$env:http_proxy="127.0.0.1:1080"
+$env:https_proxy="127.0.0.1:1080"
+```
+
+为了方便，将下面函数添加到 `$PROFILE` 中就可以通过 proxy 和 unproxy 来实现设置与取消代理了。
+
+```
+# Set and unset proxy for PowerShell
+function proxy {
+    param (
+        $ssr = "127.0.0.1:1080"
+    )
+    New-Item -Path Env: -Name http_proxy -Value $ssr
+    New-Item -Path Env: -Name https_proxy -Value $ssr
+}
+
+function unproxy {
+    Remove-Item -Path Env:\http_proxy
+    Remove-Item -Path Env:\https_proxy
+}
+```
+
+## Git Bash
+
+```
+# 设置
+export http_proxy=http://127.0.0.1:1080
+export https_proxy=http://127.0.0.1:1080
+# 取消
+unset http_proxy https_proxy
+```
+
+## All APPs
+
+```
+# 设置
+netsh winhttp import proxy source=ie
+# 取消
+netsh winhttp reset proxy
+```
+
+## 为 Git 设置代理
+
+### Git over HTTPS
+
+设置代理：
+
+```
+# 如果是 socks5 代理的话
+git config --global http.proxy socks5h://127.0.0.1:1080
+# http 代理仅需将 socks5h 改为 http
+git config --global http.proxy http://127.0.0.1:1080
+```
+
+取消代理：
+
+```
+git config --global --unset http.proxy
+```
+
+也可以仅为 GitHub 设置代理
+
+```
+git config --global http.https://github.com.proxy socks5h://127.0.0.1:1080
+```
+
+socks5h 和 socks5 的区别：
+
+> In a proxy string, socks5h:// and socks4a:// mean that the hostname is resolved by the SOCKS server. socks5:// and socks4:// mean that the hostname is resolved locally. socks4a:// means to use SOCKS4a, which is an extension of SOCKS4.
+
+来源：[Differentiate socks5h from socks5 and socks4a from socks4 when handling proxy string](https://github.com/urllib3/urllib3/issues/1035)
+
+### Git over SSH
+
+需要修改 `~/.ssh/config` 文件
+
+如果仅为 GitHub 设置代理，且使用 socks5 代理的话
+
+```
+Host github.com
+    HostName github.com
+    # Port 22
+    User git
+    IdentityFile ~/.ssh/git_ed25519
+    ProxyCommand connect -S 127.0.0.1:1080 -a none %h %p
+```
+
+如果 22 端口禁止访问，报 `kex_exchange_identification: Connection closed by remote host` 错误时，替换为
+
+```
+Host github.com
+    HostName ssh.github.com
+    Port 443
+    User git
+    IdentityFile ~/.ssh/git_ed25519
+    ProxyCommand connect -S 127.0.0.1:1080 -a none %h %p
+```
+
+这里 `-S` 表示使用 socks5 代理，如果是 http 代理则为 `-H`。connect 工具 [Git for Windows](https://gitforwindows.org) 自带。
+
+我自己的话，则是设置成这样：
+
+```
+Host github.com
+    HostName ssh.github.com
+    Port 443
+    User git
+    IdentityFile ~/.ssh/git_ed25519
+    ProxyCommand connect -S 127.0.0.1:1080 -a none %h %p
+
+Host github.com
+    HostName github.com
+    # Port 22
+    User git
+    IdentityFile ~/.ssh/git_ed25519
+    ProxyCommand connect -S 127.0.0.1:1080 -a none %h %p
+
+Host *
+    # PreferredAuthentications publickey
+    ServerAliveInterval 30
+    TCPKeepAlive yes
+```
+
+来源：[laispace/git 设置和取消代理](https://gist.github.com/laispace/666dd7b27e9116faece6)

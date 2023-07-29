@@ -1,0 +1,18 @@
+---
+layout: post
+title:  "向已存在的文件夹添加git地址"
+date:   2023-07-30 00:54:50 +0800
+categories: 代码笔记
+permalink: /CodeNotes/687382f3.html
+tags: [Git]
+---
+
+```
+git init # 先初始化
+git remote add origin git@git.dev.tencent.com:xxx/xxx.git #添加远程仓库
+git add *  # 文件加入版本控制
+git commit -m 'init' # 提交
+git branch --set-upstream-to=origin/master  #关键步骤,If you wish to set tracking information for this branch you can do so with:
+git pull --allow-unrelated-histories # 关键步骤,
+git push orgin master # 推送到远程仓库
+```
