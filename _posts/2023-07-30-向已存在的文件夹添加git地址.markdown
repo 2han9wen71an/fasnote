@@ -14,5 +14,5 @@ git add *  # 文件加入版本控制
 git commit -m 'init' # 提交
 git branch --set-upstream-to=origin/master  #关键步骤,If you wish to set tracking information for this branch you can do so with:
 git pull --allow-unrelated-histories # 关键步骤,
-git push orgin master # 推送到远程仓库
+git push origin master # 推送到远程仓库
 ```
