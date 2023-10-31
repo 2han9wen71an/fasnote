@@ -7,7 +7,7 @@ post_date=`date  +"%Y-%m-%d %T"`
 post_name="`date "+%Y-%m-%d"`-${title}.markdown"
 random_addr=`openssl rand -hex 8 | md5 | cut -c1-8`
 
-cat > ${DIR}/../_posts/${post_name} << EOF
+cat > ${DIR}/_posts/${post_name} << EOF
 ---
 layout: post
 title:  "${title}"
