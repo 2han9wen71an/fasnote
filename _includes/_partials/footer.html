@@ -23,21 +23,13 @@
 {% endif %}
 
 {% if site.footer.beian.enable %}
-<div id="beian-info"></div>
+<div id="beian-info" 
+     data-domains="{{ site.footer.beian.domains | jsonify | escape }}"
+     data-current-host="{{ '' }}"
+></div>
 <script>
-  // 从 Liquid 中获取配置
-  const beianConfig = {
-    enable: {{ site.footer.beian.enable | default: false }},
-    domains: [
-      {% for domain in site.footer.beian.domains %}
-        {
-          url: "{{ domain.url }}",
-          strict: {{ domain.strict | default: false }},
-          icp: "{{ domain.icp }}"
-        },
-      {% endfor %}
-    ]
-  };
+  const beianDiv = document.getElementById('beian-info');
+  const beianConfig = JSON.parse(beianDiv.dataset.domains);;
 
   // 获取当前浏览器 URL 的 host
   const currentHost = window.location.host;
@@ -72,7 +64,7 @@
   }
 
   // 获取备案信息
-  const beianInfo = getBeianInfo(currentHost, beianConfig.domains);
+  const beianInfo = getBeianInfo(currentHost, beianConfig);
 
   // 如果找到备案信息，插入到页面中
   if (beianInfo) {
