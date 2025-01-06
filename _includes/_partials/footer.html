@@ -21,3 +21,19 @@
   </a>
 </div>
 {% endif %}
+
+{% if site.footer.beian.enable %}
+  {% assign current_host = site.url | split: '//' | last %}
+  {% assign beian_info = nil %}
+  {% for domain in site.footer.beian.domains %}
+    {% if current_host == domain.url %}
+      {% assign beian_info = domain.icp %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+  {% if beian_info %}
+  <div id="beian-info">
+    <a href="https://beian.miit.gov.cn/" target="_blank">{{ beian_info }}</a>
+  </div>
+  {% endif %}
+{% endif %}

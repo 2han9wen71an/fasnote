@@ -754,3 +754,13 @@ version: 5.1.1
 reward_comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
 wechatpay: https://s2.loli.net/2023/04/09/iUJrVHuzsSDX4IL.png
 alipay: https://s2.loli.net/2023/04/09/TQ81SCEYJy4xtG3.png
+
+# Footer
+footer:
+  beian: 
+    enable: true
+    domains:
+      - url: xtboke.cn
+        icp: "湘ICP备18013761号-1"
+      - url: localhost:4000
+        icp: "湘ICP备18013761号-1"
