@@ -23,20 +23,62 @@
 {% endif %}
 
 {% if site.footer.beian.enable %}
-  {% assign current_host = site.host | append:":" | append: site.port %}
-  <div style="display: none;">
-    当前域名是: {{ current_host }}
-  </div>
-  {% assign beian_info = nil %}
-  {% for domain in site.footer.beian.domains %}
-    {% if current_host == domain.url %}
-      {% assign beian_info = domain.icp %}
-      {% break %}
-    {% endif %}
-  {% endfor %}
-  {% if beian_info %}
-  <div id="beian-info">
-    <a href="https://beian.miit.gov.cn/" target="_blank">{{ beian_info }}</a>
-  </div>
-  {% endif %}
+<div id="beian-info"></div>
+<script>
+  // 从 Liquid 中获取配置
+  const beianConfig = {
+    enable: {{ site.footer.beian.enable | default: false }},
+    domains: [
+      {% for domain in site.footer.beian.domains %}
+        {
+          url: "{{ domain.url }}",
+          strict: {{ domain.strict | default: false }},
+          icp: "{{ domain.icp }}"
+        },
+      {% endfor %}
+    ]
+  };
+
+  // 获取当前浏览器 URL 的 host
+  const currentHost = window.location.host;
+
+  // 匹配备案信息
+  function getBeianInfo(host, domains) {
+    for (const domain of domains) {
+      if (domain.strict) {
+        // 严格模式：完全匹配
+        if (host === domain.url) {
+          return domain.icp;
+        }
+      } else {
+        // 非严格模式：匹配一级域名或特定host
+        const domainParts = domain.url.split('.');
+        const currentParts = host.split('.');
+        if (domainParts.length === 1) {
+          // 如果配置的域名只有一个部分，如 "localhost"
+          if (host === domain.url) {
+            return domain.icp;
+          }
+        } else if (
+          domainParts.length >= 2 &&
+          currentParts.length >= 2 &&
+          domainParts.slice(-2).join('.') === currentParts.slice(-2).join('.')
+        ) {
+          return domain.icp;
+        }
+      }
+    }
+    return null;
+  }
+
+  // 获取备案信息
+  const beianInfo = getBeianInfo(currentHost, beianConfig.domains);
+
+  // 如果找到备案信息，插入到页面中
+  if (beianInfo) {
+    document.getElementById("beian-info").innerHTML = `
+      <a href="https://beian.miit.gov.cn/" target="_blank">${beianInfo}</a>
+    `;
+  }
+</script>
 {% endif %}
