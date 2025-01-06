@@ -23,7 +23,7 @@
 {% endif %}
 
 {% if site.footer.beian.enable %}
-  {% assign current_host = site.url | split: '//' | last | split: '/' | first %}
+  {% assign current_host = site.host | append:":" | append: site.port %}
   <div style="display: none;">
     当前域名是: {{ current_host }}
   </div>
