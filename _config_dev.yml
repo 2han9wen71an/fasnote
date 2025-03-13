@@ -1,0 +1,34 @@
+# 开发环境配置文件
+# 继承主配置文件
+# 禁用不必要的功能以加快构建速度
+
+# 禁用一些不必要的插件
+plugins:
+  - jekyll-feed
+
+# 减少构建范围
+exclude:
+  - ".rvmrc"
+  - ".rbenv-version"
+  - "README.md"
+  - "Rakefile"
+  - "changelog.md"
+  - "Gemfile"
+  - "Gemfile.lock"
+  - "README_en.md"
+  - "vendor"
+  - "node_modules"
+  - ".sass-cache"
+  - ".jekyll-cache"
+  - ".git"
+
+# 禁用不必要的功能
+search: false
+comments: false
+related_posts: false
+
+# 减少分页数量
+paginate: 5
+
+# 禁用一些第三方服务
+analytics: false 
