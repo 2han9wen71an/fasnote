@@ -54,8 +54,40 @@ kramdown:
 defaults:
   - scope:
       path: ""
+    values:
+      sitemap: true
+  - scope:
+      path: ""
       type: "posts"
     values:
+      layout: "post"
+      comments: true
+      sitemap: true
+  - scope:
+      path: "login.html"
+    values:
+      sitemap: false
+  - scope:
+      path: "password-generator.html"
+    values:
+      sitemap: false
+  - scope:
+      path: "_posts"
+      type: "posts"
+    values:
+      sitemap: true
+      layout: "post"
+      comments: true
+  - scope:
+      path: "_posts"
+      type: "posts"
+    values:
+      sitemap: true
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      sitemap: true
       layout: "post"
       comments: true
 
@@ -67,8 +99,36 @@ feed:
 ## Docs: https://help.github.com/articles/configuring-jekyll-plugins/
 plugins:
   - jemoji
-  - jekyll-sitemap
   - jekyll-feed
+
+# Sitemap settings
+defaults:
+  - scope:
+      path: ""
+    values:
+      sitemap: true
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      comments: true
+      sitemap: true
+  - scope:
+      path: "login.html"
+    values:
+      sitemap: false
+  - scope:
+      path: "password-generator.html"
+    values:
+      sitemap: false
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      sitemap: true
+      layout: "post"
+      comments: true
 
 # ---------------------------------------------------------------
 # Site Information Settings
@@ -764,3 +824,10 @@ footer:
         icp: "湘ICP备18013761号-1"
       - url: localhost:4000
         icp: "湘ICP备18013761号-1"
+
+# 私密文章设置
+private_posts:
+  enable: true
+  login_path: /login/  # 登录页面路径
+  cookie_name: blog_session  # 用于存储登录状态的 cookie 名称
+  session_duration: 604800  # session 有效期（秒），默认7天

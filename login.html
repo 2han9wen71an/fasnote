@@ -1,0 +1,135 @@
+---
+layout: page
+title: 登录
+permalink: /login/
+---
+
+<div class="login-container">
+  <form id="login-form" onsubmit="return false;">
+    <div class="form-group">
+      <label for="username">用户名</label>
+      <input type="text" id="username" name="username" required>
+    </div>
+    <div class="form-group">
+      <label for="password">密码</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <div class="error-message" id="error-message" style="display: none; color: red; margin-bottom: 10px;"></div>
+    <button type="submit" onclick="submitLogin()">登录</button>
+  </form>
+</div>
+
+<style>
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  padding: 10px;
+  background-color: #fff2f2;
+  border: 1px solid #ffcdd2;
+  border-radius: 4px;
+  color: #d32f2f;
+  font-size: 14px;
+}
+</style>
+
+<script>
+// 注入配置到页面
+window.PRIVATE_CONFIG = {
+  loginPath: '{{ site.private_posts.login_path }}',
+  cookieName: '{{ site.private_posts.cookie_name }}',
+  sessionDuration: {{ site.private_posts.session_duration }}
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.js"></script>
+<script src="/assets/js/login.js"></script>
+<script>
+function showError(message) {
+  const errorElement = document.getElementById('error-message');
+  errorElement.textContent = message;
+  errorElement.style.display = 'block';
+}
+
+async function submitLogin() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  
+  if (!username || !password) {
+    showError('请输入用户名和密码');
+    return;
+  }
+  
+  const submitButton = document.querySelector('button[type="submit"]');
+  submitButton.disabled = true;
+  submitButton.textContent = '登录中...';
+  
+  try {
+    await handleLogin(username, password);
+    // 获取返回链接
+    const returnUrl = new URLSearchParams(window.location.search).get('return') || '/';
+    window.location.href = decodeURIComponent(returnUrl);
+  } catch (error) {
+    showError(error.message || '登录失败，请重试');
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = '登录';
+  }
+}
+
+// 如果已经登录，直接跳转到首页或返回链接
+if (checkLoginStatus()) {
+  const returnUrl = new URLSearchParams(window.location.search).get('return') || '/';
+  window.location.href = decodeURIComponent(returnUrl);
+}
+</script> 

@@ -5,6 +5,7 @@ date:   2022-06-10 16:09:06 +0800
 categories: 折腾笔记
 permalink: /Toss-notes/adguard-vpn-coexist.html
 tags: [AdGuard]
+status: private
 ---
 
 ## root通用共存（推荐）

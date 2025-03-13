@@ -3,4 +3,25 @@ layout: layout
 ---
 
 {% assign __ = site.data.languages[site.language] %}
+
+{% if page.status == 'private' and site.private_posts.enable %}
+  {% if jekyll.environment == "production" %}
+    <meta name="robots" content="noindex, nofollow">
+  {% endif %}
+  <script>
+    // 注入配置到页面
+    window.PRIVATE_CONFIG = {
+      loginPath: '{{ site.private_posts.login_path }}',
+      cookieName: '{{ site.private_posts.cookie_name }}',
+      sessionDuration: {{ site.private_posts.session_duration }}
+    };
+  </script>
+  <script src="/assets/js/private-content.js"></script>
+  <body class="private-post">
+{% endif %}
+
 {% include post.html %}
+
+{% if page.status == 'private' %}
+  </body>
+{% endif %}
