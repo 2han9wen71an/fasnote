@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Polarion-Arm-环境修复"
-description: ""·
-date:   2025-06-21 11:20:39 +0800
+title: "Polarion-Arm-环境修复"
+description: "修复 Polarion 在 Arm 环境下 JNA 和 Node 的兼容性问题"·
+date: 2025-06-21 11:20:39 +0800
 categories: 折腾笔记
 permalink: /Toss-notes/polarion-arm-fix.html
 tags: [Polarion,Arm]
