@@ -35,4 +35,4 @@ jobs:
       - name: Deploy to EdgeOne Pages
         run: |
           REPO_NAME=$(echo "${GITHUB_REPOSITORY}" | cut -d '/' -f2)
-          npx edgeone pages deploy ./_site -n "$REPO_NAME" -t $
+          npx edgeone pages deploy ./_site -n "$REPO_NAME" -t $EDGEONE_API_TOKEN
