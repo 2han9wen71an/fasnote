@@ -1,0 +1,38 @@
+name: Build and Deploy Jekyll site to EdgeOne Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: Build Jekyll site
+        run: bundle exec jekyll build
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.11.0'
+      
+      - name: Deploy to EdgeOne Pages
+        run: |
+          REPO_NAME=$(echo "${GITHUB_REPOSITORY}" | cut -d '/' -f2)
+          npx edgeone pages deploy ./_site -n "$REPO_NAME" -t $
